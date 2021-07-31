@@ -1,12 +1,18 @@
+'''a good atricle
+https://gilberttanner.com/blog/interpreting-pytorch-models-with-captum
+'''
+
 import os
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = ""
+os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
+from matplotlib.colors import LinearSegmentedColormap
+
+from captum.attr import *
 
 import torch
 from torch import nn as nn
 from torch.nn import functional as F
 from libs.dataset.my_dataset_torchio import get_tensor
-import matplotlib.pyplot as plt
 
 from libs.neural_networks.model.ModelsGenesis.unet3d import UNet3D, TargetNet
 base_model = UNet3D()
@@ -27,31 +33,28 @@ if torch.cuda.device_count() > 0:
 if torch.cuda.device_count() > 1:
     model = nn.DataParallel(model)
 
+inputs = inputs.to(device)
 output = model(inputs)
 probs = F.softmax(output, dim=1).data.cpu().numpy()
 label_pd = probs.argmax(axis=-1)
 
 print(label_pd)
 
-layer_conv = model.base_model.down_tr512.ops[1].conv1
-from libs.neural_networks.heatmaps.obsoleted.GradCamPP import GradCAM
-gradcam = GradCAM(model, layer_conv, dim=3)
-mask, logit = gradcam(inputs, label_pd)
-# mask, logit = gradcam(inputs, class_idx=label_pd)
-# mask, logit = gradcam(normed_torch_img)  #class_idx N
+label_pd = torch.IntTensor(label_pd)
+label_pd = label_pd.to(device)
 
-mask = torch.squeeze(mask).cpu().numpy()
+default_cmap = LinearSegmentedColormap.from_list('custom blue',
+                                                 [(0, '#ffffff'),
+                                                  (0.25, '#000000'),
+                                                  (1, '#000000')], N=256)
 
-for i in range(mask.shape[0]):
-    image = mask[i, :, :]
-    from matplotlib.pyplot import imshow, show
-    imshow(mask, alpha=0.5, cmap='jet')
-    show()
-    plt.axis("off")  # turns off axes
-    plt.axis("tight")  # gets rid of white border
-    plt.axis("image")  # square up the image instead of filling the "figure" space
-    plt.savefig("test.png", bbox_inches='tight', pad_inches=0)
+# IntegratedGradients Saliency  GuidedBackprop DeepLift, GradientShap,
+# DeepLift, IntegratedGradients, LayerGradCam
+heatmap_type = 'IntegratedGradients'
 
-    print('aaa')
+if heatmap_type == 'IntegratedGradients':
+    integrated_gradients = IntegratedGradients(model)
+    attribution = integrated_gradients.attribute(inputs, target=label_pd, n_steps=32)
+
 
 print('OK')

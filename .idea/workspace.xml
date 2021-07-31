@@ -1,7 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand />
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="30e1dae6-6c7e-435e-9ac4-c4c71012c9c4" name="Default Changelist" comment="" />
+    <list default="true" id="30e1dae6-6c7e-435e-9ac4-c4c71012c9c4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/heatmaps/Captum/captum_test_3d.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/heatmaps/Captum/draw_heatmap.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/heatmaps/Captum/imagenet_class_index.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/heatmaps/t_SNE/my_tsne_helper.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/helper/my_predict_binary_class.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/helper/my_predict_multi_class.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/helper/my_train_binary_class.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/helper/my_train_multi_class.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/loss/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/loss/my_label_smoothing.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/model/MedicalNet/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/model/MedicalNet/resnet.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/model/ModelsGenesis/TargetNet.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/model/ModelsGenesis/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/model/ModelsGenesis/unet3d.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/model/cls_3d.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/model/model_3d/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/model/model_3d/pre_act_resnet.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/model/model_3d/readme" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/model/model_3d/resnet.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/model/model_3d/resnet2p1d.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/model/model_3d/resnext.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/neural_networks/model/my_get_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/predict/binary_class/heatmaps/my_gen_heatmaps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/predict/binary_class/heatmaps/my_gen_t_SNE.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/predict/binary_class/my_predict.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/predict/binary_class/my_predict_model_ensemble.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/predict/multi_class/heatmaps/my_gen_heatmaps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/predict/multi_class/heatmaps/my_gen_t_SNE.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/predict/multi_class/my_predict.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/predict/multi_class/my_predict_model_ensemble.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train/my_train_binary_class.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train/my_train_multi_class.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/3D_OCT_AMD.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/3D_OCT_AMD.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_process/code_test/my_3d_aug.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_process/code_test/my_read_npy.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_process/my_3d_aug.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_process/my_gen_csv.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_process/my_gen_csv.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_process/my_topocon.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_process/my_topocon.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_process/my_zeiss.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_process/my_zeiss.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/data_preprocess/my_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/libs/data_preprocess/my_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/data_preprocess/my_data_patiend_id.py" beforeDir="false" afterPath="$PROJECT_DIR$/libs/data_preprocess/my_data_patiend_id.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/data_validation/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/libs/neural_networks/heatmaps/Captum/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/data_validation/my_confusion_matrix.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/dataset/my_dataset_torchio.py" beforeDir="false" afterPath="$PROJECT_DIR$/libs/dataset/my_dataset_torchio.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/dataset/test/my_dataset_torchio_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/libs/dataset/test/my_dataset_torchio_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/dataset/test/test.csv" beforeDir="false" afterPath="$PROJECT_DIR$/libs/dataset/test/test.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/dicom/my_dicom.py" beforeDir="false" afterPath="$PROJECT_DIR$/libs/dicom/my_dicom.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/heatmaps/CAM/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/libs/neural_networks/heatmaps/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/heatmaps/CAM/cam.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/heatmaps/CAM/cam_test_2d.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/heatmaps/CAM/cam_test_3d.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/heatmaps/CAM/cat.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/libs/neural_networks/heatmaps/Captum/cat.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/heatmaps/CAM/elephant.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/libs/neural_networks/heatmaps/Captum/elephant.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/heatmaps/Captum/captum_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/libs/neural_networks/heatmaps/Captum/captum_test_2d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/heatmaps/Captum/cat.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/heatmaps/Captum/elephant.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/heatmaps/Captum/goose.png" beforeDir="false" afterPath="$PROJECT_DIR$/libs/neural_networks/heatmaps/Captum/goose.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/heatmaps/GradCamPP/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/libs/neural_networks/heatmaps/t_SNE/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/heatmaps/GradCamPP/cat.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/heatmaps/GradCamPP/gradcampp.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/heatmaps/GradCamPP/gradcampp_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/heatmaps/GradCamPP/utils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/heatmaps/ScoreCAM/misc_functions.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/heatmaps/ScoreCAM/scorecam.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/heatmaps/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/libs/neural_networks/helper/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/helper/my_predict.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/helper/my_train.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/img_preprocess/my_image_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/libs/img_preprocess/my_image_helper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/neural_networks/heatmaps/obsoleted/GradCamPP/gradcam_test_3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/libs/neural_networks/heatmaps/obsoleted/GradCamPP/gradcam_test_3d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/neural_networks/heatmaps/obsoleted/medcam/my_medcam.py" beforeDir="false" afterPath="$PROJECT_DIR$/libs/neural_networks/heatmaps/obsoleted/medcam/my_medcam.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/oct/my_oct_helper.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/predict/my_predict.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/train/my_train.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/train/my_train_torchio.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/train/train_history" beforeDir="false" afterPath="$PROJECT_DIR$/train/train_history" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,18 +127,11 @@
     <property name="ToolWindowSciView.ShowToolbar" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="add_unversioned_files" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/datafiles" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/neural_networks/helper" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/datafiles" />
-      <recent name="$PROJECT_DIR$/predict/binary_m1_m2" />
-      <recent name="$PROJECT_DIR$/predict/multi_class" />
-      <recent name="$PROJECT_DIR$/libs/neural_networks" />
-      <recent name="$PROJECT_DIR$/trained_models/binary_class_m1_m2" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/predict/binary_class" />
       <recent name="$PROJECT_DIR$/predict" />
@@ -63,8 +139,15 @@
       <recent name="$PROJECT_DIR$/trained_models/multi_class" />
       <recent name="$PROJECT_DIR$/libs/neural_networks/model" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/libs/neural_networks/helper" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/datafiles" />
+      <recent name="$PROJECT_DIR$/predict/binary_m1_m2" />
+      <recent name="$PROJECT_DIR$/predict/multi_class" />
+    </key>
   </component>
-  <component name="RunManager" selected="Python.my_gen_heatmaps">
+  <component name="RunManager" selected="Python.my_predict">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="3D_OCT_DME_Torch" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -229,9 +312,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.my_predict" />
         <item itemvalue="Python.my_gen_heatmaps" />
         <item itemvalue="Python.my_gen_t_SNE" />
-        <item itemvalue="Python.my_predict" />
         <item itemvalue="Python.my_train_binary_class (1)" />
         <item itemvalue="Python.my_train_binary_class" />
       </list>
@@ -345,7 +428,19 @@
       <workItem from="1627726887318" duration="18000" />
       <workItem from="1627726911360" duration="4527000" />
       <workItem from="1627732422773" duration="183000" />
-      <workItem from="1627732610113" duration="349000" />
+      <workItem from="1627732610113" duration="444000" />
+      <workItem from="1627733907180" duration="13000" />
+      <workItem from="1627734056253" duration="47000" />
+      <workItem from="1627734257320" duration="66000" />
+      <workItem from="1627734498046" duration="262000" />
+      <workItem from="1627734766739" duration="64000" />
+      <workItem from="1627735239368" duration="155000" />
+      <workItem from="1627735740128" duration="93000" />
+      <workItem from="1627736114920" duration="48000" />
+      <workItem from="1627736279354" duration="41000" />
+      <workItem from="1627736671721" duration="51000" />
+      <workItem from="1627736825272" duration="14000" />
+      <workItem from="1627737837239" duration="16000" />
     </task>
     <task id="LOCAL-00001" summary="2021_2_23 commit.">
       <created>1614048702699</created>
@@ -452,7 +547,14 @@
       <option name="project" value="LOCAL" />
       <updated>1627730574676</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="2021_7_31 commit.">
+      <created>1627732987525</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1627732987525</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -496,11 +598,6 @@
         </entry>
       </map>
     </option>
-    <option name="OPEN_GENERIC_TABS">
-      <map>
-        <entry key="1" value="TOOL_WINDOW" />
-      </map>
-    </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
@@ -531,10 +628,10 @@
     </state>
     <state x="383" y="212" width="1225" height="644" key="#xdebugger.evaluate/0.27.1920.1053@0.27.1920.1053" timestamp="1627721744083" />
     <state x="90" y="42" width="826" height="528" key="#xdebugger.evaluate/67.27.957.741@67.27.957.741" timestamp="1623123947473" />
-    <state x="26" y="27" width="1121" height="1053" key="CommitChangelistDialog2" timestamp="1627730573235">
+    <state x="51" y="27" width="1121" height="1053" key="CommitChangelistDialog2" timestamp="1627732987395">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="26" y="27" width="1121" height="1053" key="CommitChangelistDialog2/0.27.1920.1053@0.27.1920.1053" timestamp="1627730573235" />
+    <state x="51" y="27" width="1121" height="1053" key="CommitChangelistDialog2/0.27.1920.1053@0.27.1920.1053" timestamp="1627732987395" />
     <state x="80" y="27" width="920" height="741" key="CommitChangelistDialog2/67.27.957.741@67.27.957.741" timestamp="1623131934294" />
     <state x="405" y="105" width="530" height="605" key="FileChooserDialogImpl" timestamp="1624009353874">
       <screen x="0" y="27" width="1920" height="1053" />
@@ -594,11 +691,15 @@
     </state>
     <state x="199" y="82" width="1286" height="912" key="SettingsEditor/0.27.1920.1053@0.27.1920.1053" timestamp="1627729604668" />
     <state x="67" y="27" key="SettingsEditor/67.27.957.741@67.27.957.741" timestamp="1623206681695" />
-    <state x="310" y="144" width="1000" height="662" key="Vcs.Push.Dialog.v2" timestamp="1627732639358">
+    <state x="310" y="144" width="1000" height="662" key="Vcs.Push.Dialog.v2" timestamp="1627732999158">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="310" y="144" width="1000" height="662" key="Vcs.Push.Dialog.v2/0.27.1920.1053@0.27.1920.1053" timestamp="1627732639358" />
+    <state x="310" y="144" width="1000" height="662" key="Vcs.Push.Dialog.v2/0.27.1920.1053@0.27.1920.1053" timestamp="1627732999158" />
     <state x="148" y="109" width="800" height="531" key="Vcs.Push.Dialog.v2/67.27.957.741@67.27.957.741" timestamp="1623132003344" />
+    <state x="197" y="127" width="1720" height="853" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1627734759263">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="197" y="127" width="1720" height="853" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1627734759263" />
     <state x="185" y="84" width="1137" height="996" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1627725486025">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
@@ -639,11 +740,6 @@
           <url>file://$PROJECT_DIR$/libs/neural_networks/heatmaps/obsoleted/CAM/cam_test_2d.py</url>
           <line>76</line>
           <option name="timeStamp" value="71" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/data_process/my_3d_aug.py</url>
-          <line>118</line>
-          <option name="timeStamp" value="130" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/libs/neural_networks/heatmaps/obsoleted/medcam/my_medcam.py</url>
@@ -816,11 +912,6 @@
           <option name="timeStamp" value="331" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/libs/neural_networks/helper/my_predict_multi_class.py</url>
-          <line>53</line>
-          <option name="timeStamp" value="348" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/predict/binary_class/heatmaps/my_gen_heatmaps.py</url>
           <line>110</line>
           <option name="timeStamp" value="357" />
@@ -832,7 +923,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/predict/binary_class/my_predict.py</url>
-          <line>31</line>
+          <line>32</line>
           <option name="timeStamp" value="402" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">

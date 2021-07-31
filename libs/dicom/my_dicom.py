@@ -3,7 +3,7 @@ import os
 import pydicom
 import numpy as np
 import cv2
-import math
+
 
 # input dicom file, output 3d ndarray
 def get_dicom_array(filename):
@@ -12,17 +12,6 @@ def get_dicom_array(filename):
     array1 = ds2.pixel_array
     return array1
 
-def get_npy(files_batch):
-    list_image = []
-
-    for file_npy in files_batch:
-        assert os.path.exists(file_npy), 'npy file does not exist.'
-        array1 = np.load(file_npy)  # shape (D,H,W)
-        if array1.ndim == 3:
-            array1 = np.expand_dims(array1, axis=-1)  #(D, H, W,  C)
-        list_image.append(array1)
-
-    return list_image
 
 def crop_3d_topocon(array1,
                     image_shape=(128, 128), padding_square=True,
@@ -106,7 +95,12 @@ def dicom_save_dirs(source_dir, dir_dest_base,
                     padding_square=True,
                     depth_interval=1, remainder=0):
 
-    for dir_path, subpaths, files in os.walk(source_dir, False):
+    if source_dir.endswith('/'):
+        source_dir = source_dir[:-1]
+    if dir_dest_base.endswith('/'):
+        dir_dest_base += dir_dest_base[:-1]
+
+    for dir_path, _, files in os.walk(source_dir, False):
         for f in files:
             file_dicom = os.path.join(dir_path, f)
             if not is_oct_file(file_dicom):
@@ -117,14 +111,11 @@ def dicom_save_dirs(source_dir, dir_dest_base,
 
             array1 = get_dicom_array(file_dicom) #topocon (128,885,512) (D,H,W)
 
-            _, filename = os.path.split(file_dicom)
+            filename_dir, filename = os.path.split(file_dicom)
             filename_stem = os.path.splitext(filename)[0]
-            dir_dest = os.path.join(dir_dest_base, filename_stem)
+            dir_dest_tmp = os.path.join(dir_dest_base, filename_stem)
+            dir_dest = filename_dir.replace(source_dir, dir_dest_tmp)
 
-            pat_id = f.replace('.dcm', '')
-            pat_id = pat_id.replace('.DCM', '')
-            pat_id = pat_id.replace('.dicom', '')
-            pat_id = pat_id.replace('.dicom', '')
 
             if image_shape is not None:
                 array1 = crop_3d_topocon(array1,
@@ -133,19 +124,55 @@ def dicom_save_dirs(source_dir, dir_dest_base,
 
             if save_npy:
                 if depth_interval == 1 and remainder == 0:
-                    filename = os.path.join(dir_dest, pat_id + '.npy')
+                    filename = os.path.join(dir_dest, filename_stem + '.npy')
                 else:
-                    filename = os.path.join(dir_dest, pat_id + f'_d{depth_interval}_r{str(remainder)}.npy')
+                    filename = os.path.join(dir_dest, filename_stem + f'_d{depth_interval}_r{str(remainder)}.npy')
 
                 os.makedirs(os.path.dirname(filename), exist_ok=True)
                 np.save(filename, array1)
 
             if save_image_files:
-                array1 = crop_3d_topocon(array1,
-                                         image_shape=image_shape, padding_square=padding_square)
                 for i in range(array1.shape[0]):  # (D,H,W)
                     filename = os.path.join(dir_dest, f'{str(i)}.png')
                     os.makedirs(os.path.dirname(filename), exist_ok=True)
                     cv2.imwrite(filename, array1[i, :, :])
 
 
+def slices_to_npy(dir1, depth_ratio=1, remainder=0, slice_num=128):
+
+    for root, dirs, _ in os.walk(dir1, False):
+        #zesis 1.jpeg, topocon 0.png
+        for dir_tmp in dirs:
+            dir_path = os.path.join(root, dir_tmp)
+            if os.path.exists(os.path.join(dir_path, '1.jpeg')) \
+                    or os.path.exists(os.path.join(dir_path, '0.png')):
+
+                print(dir_path)
+
+                list_images = []
+                for i in range(slice_num):
+                    if i % depth_ratio == remainder:
+                        if os.path.exists(os.path.join(dir_path, f'{str(i)}.png')):
+                            img_file = os.path.join(dir_path,  f'{str(i)}.png')
+                        elif os.path.exists(os.path.join(dir_path, f'{str(i+1)}.jpeg')):
+                            img_file = os.path.join(dir_path, f'{str(i+1)}.jpeg')
+                        else:
+                            # raise Exception(f'file not found:{img_file}')
+                            break
+
+                        img1 = cv2.imread(img_file, cv2.IMREAD_GRAYSCALE) #(H,W)
+                        list_images.append(img1)
+
+                if len(list_images) != slice_num:
+                    print(f'error:{dir_path}')
+                    continue
+
+                images = np.stack(list_images, axis=0)  #(H,W)->(D,H,W)
+
+                pat_id = dir_path.split('/')[-1]
+                if depth_ratio == 1 and remainder == 0:
+                    file_npy = os.path.join(dir_path, pat_id + '.npy')
+                else:
+                    file_npy = os.path.join(dir_path, pat_id + f'_d{depth_ratio}_r{str(remainder)}.npy')
+                # print(file_npy)
+                np.save(file_npy, images)
