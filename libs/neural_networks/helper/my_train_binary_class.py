@@ -11,7 +11,7 @@ import numpy as np
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 #amp:AUTOMATIC MIXED PRECISION
-def train(model, loader_train, criterion, activation, optimizer, scheduler, epochs_num, label_smoothing=0.1,
+def train(model, loader_train, criterion, activation, optimizer, scheduler, epochs_num, label_smoothing=0.,
           amp=False, accumulate_grads_times=None,
           log_interval_train=10, log_interval_valid=None,
           loader_valid=None, loader_test=None,
@@ -35,9 +35,8 @@ def train(model, loader_train, criterion, activation, optimizer, scheduler, epoc
             list_labels.extend(labels.numpy())
             labels = labels.float()
             if label_smoothing != 0:
-                labels_np = labels.numpy()
-                labels_np[labels_np == 1] = 1-label_smoothing
-                labels_np[labels_np == 0] = label_smoothing
+                labels[labels == 1] = 1-label_smoothing
+                labels[labels == 0] = label_smoothing
 
             inputs = inputs.to(device)
             labels = labels.to(device)
@@ -69,12 +68,12 @@ def train(model, loader_train, criterion, activation, optimizer, scheduler, epoc
                     scaler.step(optimizer)
 
             # region batch statistics
-            # CrossEntropyLoss contains log_softmax and	nll_loss
-            # the following line can be eliminated, unless we want to show probs.
+            epoch_loss += loss.item()
+            running_loss += loss.item()  #reduction='mean'
+
             assert activation in [None, 'sigmoid'], f'activation function error!'
             if activation == 'sigmoid':
                 outputs = torch.sigmoid(outputs)
-
             outputs = outputs.cpu().detach().numpy()
             outputs[outputs > 0.5] = 1
             outputs[outputs <= 0.5] = 0
@@ -82,10 +81,10 @@ def train(model, loader_train, criterion, activation, optimizer, scheduler, epoc
             preds = outputs
             list_preds.extend(outputs)
 
-            epoch_loss += loss.item()
-
-            running_loss += loss.item()  #reduction='mean'
             labels = labels.cpu().numpy()
+            if label_smoothing > 0:
+                labels[labels > 0.5] = 1
+                labels[labels <= 0.5] = 0
             running_corrects += np.sum(preds == labels)
             running_sample_num += inputs.shape[0]
 

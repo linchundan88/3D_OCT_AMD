@@ -15,6 +15,8 @@ class _SaveFeatures():
     def remove(self):
         self.hook.remove()
 
+
+@torch.no_grad()
 def __get_features(model, inputs, layer):
     if isinstance(layer, str):
         layer = model._modules.get(layer)
@@ -24,7 +26,7 @@ def __get_features(model, inputs, layer):
     #         final_layer = v
 
     activated_features = _SaveFeatures(layer)
-    prediction = model(inputs)
+    _ = model(inputs)
     activated_features.remove()
 
     return activated_features.features
@@ -83,7 +85,7 @@ def draw_tsne(X_tsne, labels, nb_classes, labels_text, colors=['g', 'r'], save_t
 
 
 def gen_tse_features(features):
-    tsne = TSNE(n_components=2)
+    tsne = TSNE(n_components=2)  #n_components:Dimension of the embedded space.
     X_tsne = tsne.fit_transform(features)
 
     return X_tsne

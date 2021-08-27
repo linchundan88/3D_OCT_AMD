@@ -4,6 +4,7 @@ from torch import nn as nn
 from torch.nn import functional as F
 
 
+@torch.no_grad()
 def predict_single_model(model, dataloader, log_interval=1, activation='sigmoid', threshold=None):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if torch.cuda.device_count() > 0:
@@ -13,27 +14,25 @@ def predict_single_model(model, dataloader, log_interval=1, activation='sigmoid'
     model.eval()
 
     list_probs = []
-    with torch.no_grad():
-        for batch_idx, (inputs) in enumerate(dataloader):
-            inputs = inputs.to(device)
-            outputs = model(inputs)
-            if activation == 'sigmoid':
-                outputs = F.sigmoid(outputs).data
-            outputs = torch.flatten(outputs)
-            list_probs.extend(outputs.cpu().numpy().tolist())
+    for batch_idx, (inputs) in enumerate(dataloader):
+        inputs = inputs.to(device)
+        outputs = model(inputs)
+        if activation == 'sigmoid':
+            outputs = F.sigmoid(outputs).data
+        outputs = torch.flatten(outputs)
+        list_probs.extend(outputs.cpu().numpy().tolist())
 
-            if (log_interval is not None) and (batch_idx % log_interval == log_interval - 1):
-                    print(f'batch:{batch_idx}')
+        if (log_interval is not None) and (batch_idx % log_interval == log_interval - 1):
+                print(f'batch:{batch_idx}')
 
     if threshold is not None:
         probs = np.array(list_probs)
-        probs[probs > 0.5] = 1
-        probs[probs <= 0.5] = 0
+        probs[probs > threshold] = 1
+        probs[probs <= threshold] = 0
         list_labels = probs
         return list_probs, list_labels
     else:
         return list_probs
-
 
 
 def predict_multiple_models(model_dicts, log_interval=1, activation='sigmoid'):

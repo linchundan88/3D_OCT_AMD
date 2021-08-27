@@ -12,10 +12,8 @@ import math
 
 class Dataset_CSV_train(Dataset):
     def __init__(self, csv_file, channel_first=True, image_shape=None,
-                 resample_ratio=(1, 1, 1),
-                 depth_interval=2,
-                 random_crop_h=9, random_noise=0.2,
-                 imgaug_iaa=None,
+                 resample_ratio=(1, 1, 1), depth_interval=2,
+                 random_crop_h=9, random_noise=0.2, imgaug_iaa=None,
                  ):
         assert os.path.exists(csv_file), f'csv file {csv_file} does not exists'
         self.csv_file = csv_file

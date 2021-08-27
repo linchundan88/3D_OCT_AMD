@@ -31,7 +31,7 @@ def get_pat_id_oct(full_filename):
 
     return pat_id
 
-
+# 02-000003_20160601_120250_OPT_L_001.img.npy
 def split_dataset_by_pat_id(filename_csv_or_df,
                             valid_ratio=0.1, test_ratio=None, shuffle=True, random_state=None):
 
@@ -47,16 +47,12 @@ def split_dataset_by_pat_id(filename_csv_or_df,
         df = sklearn.utils.shuffle(df, random_state=random_state)
 
     list_patient_id = []
-
     for _, row in df.iterrows():
         filename = row['images']
-
         pat_id = get_pat_id_oct(filename)
-
         print(pat_id, filename)
         if pat_id not in list_patient_id:
             list_patient_id.append(pat_id)
-
     list_patient_id = sklearn.utils.shuffle(list_patient_id, random_state=random_state)
 
     if test_ratio is None:
@@ -64,21 +60,14 @@ def split_dataset_by_pat_id(filename_csv_or_df,
         list_patient_id_train = list_patient_id[:split_num]
         list_patient_id_valid = list_patient_id[split_num:]
 
-        train_files = []
-        train_labels = []
-        valid_files = []
-        valid_labels = []
-
+        train_files, train_labels = [], []
+        valid_files, valid_labels = [], []
         for _, row in df.iterrows():
-            image_file = row['images']
-            image_labels = row['labels']
-
+            image_file, image_labels = row['images'], row['labels']
             pat_id = get_pat_id_oct(filename)
-
             if pat_id in list_patient_id_train:
                 train_files.append(image_file)
                 train_labels.append(image_labels)
-
             if pat_id in list_patient_id_valid:
                 valid_files.append(image_file)
                 valid_labels.append(image_labels)
@@ -92,28 +81,19 @@ def split_dataset_by_pat_id(filename_csv_or_df,
         list_patient_id_valid = list_patient_id[split_num_train:split_num_valid]
         list_patient_id_test = list_patient_id[split_num_valid:]
 
-        train_files = []
-        train_labels = []
-        valid_files = []
-        valid_labels = []
-        test_files = []
-        test_labels = []
-
+        train_files, train_labels = [], []
+        valid_files, valid_labels = [], []
+        test_files, test_labels = [], []
         for _, row in df.iterrows():
-            image_file = row['images']
-            image_labels = row['labels']
+            image_file, image_labels = row['images'], row['labels']
             _, filename = os.path.split(image_file)
-
             pat_id = get_pat_id_oct(filename)
-
             if pat_id in list_patient_id_train:
                 train_files.append(image_file)
                 train_labels.append(image_labels)
-
             if pat_id in list_patient_id_valid:
                 valid_files.append(image_file)
                 valid_labels.append(image_labels)
-
             if pat_id in list_patient_id_test:
                 test_files.append(image_file)
                 test_labels.append(image_labels)

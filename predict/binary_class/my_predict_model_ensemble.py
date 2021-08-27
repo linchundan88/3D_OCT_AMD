@@ -13,7 +13,7 @@ from libs.neural_networks.helper.my_predict_binary_class import predict_multiple
 import shutil
 from libs.neural_networks.model.my_get_model import get_model
 
-filename_csv = os.path.join(os.path.abspath('../..'), 'datafiles', 'v1', f'3D_OCT_AMD.csv')
+filename_csv = os.path.join(os.path.abspath('../..'), 'datafiles', 'v1', '3D_OCT_AMD.csv')
 dir_original = '/disk1/3D_OCT_AMD/2021_4_22/original/'
 dir_preprocess = '/disk1/3D_OCT_AMD/2021_4_22/preprocess/128_128_128/'
 dir_dest = '/tmp2/3D_OCT_AMD/3D_OCT_AMD_confusion_files_2021_7_30/'
@@ -23,6 +23,7 @@ threshold = 0.5
 
 models_dicts = []
 
+'''
 model_name = 'cls_3d'
 # model_file = '/tmp2/2021_6_6/v2/ModelsGenesis/0/epoch13.pth'
 model_file = os.path.join(os.path.abspath('../..'), 'trained_models', 'binary_class', 'cls_3d.pth')
@@ -33,6 +34,7 @@ ds_test = Dataset_CSV_test(csv_file=filename_csv, image_shape=image_shape,
 loader_test = DataLoader(ds_test, batch_size=32, pin_memory=True, num_workers=4)
 model_dict = {'model': model, 'weight': 1, 'dataloader': loader_test}
 models_dicts.append(model_dict)
+'''
 
 model_name = 'medical_net_resnet50'
 model_file = os.path.join(os.path.abspath('../..'), 'trained_models', 'binary_class', 'medical_net_resnet50.pth')
@@ -43,7 +45,6 @@ ds_test = Dataset_CSV_test(csv_file=filename_csv, image_shape=image_shape,
 loader_test = DataLoader(ds_test, batch_size=32, pin_memory=True, num_workers=4)
 model_dict = {'model': model, 'weight': 1, 'dataloader': loader_test}
 models_dicts.append(model_dict)
-
 
 probs, probs_ensembling = predict_multiple_models(models_dicts)
 labels_pd = np.array(probs_ensembling)
@@ -57,36 +58,8 @@ cf = confusion_matrix(labels, labels_pd)
 print(cf)
 
 if export_confusion_files:
-    for image_file, label_gt, prob in zip(image_files, labels, probs_ensembling):
-        if prob > threshold:
-            label_pred = 1
-        else:
-            label_pred = 0
-        if label_gt != label_pred:
-            dir_base = os.path.dirname(image_file.replace(dir_preprocess, dir_original))
-            for dir_path, _, files in os.walk(dir_base, False):
-                for f in files:
-                    file_full_path = os.path.join(dir_path, f)
-                    _, file_name = os.path.split(file_full_path)
-                    _, file_ext = os.path.splitext(file_name)
-                    if file_ext.lower() in ['.jpeg', '.jpg', '.png']:
-                        file_partial_path = file_full_path.replace(dir_original, '')
-                        file_name1 = os.path.join(dir_dest, f'{label_gt}_{label_pred}', file_partial_path)
-                        tmp_dir, tmp_filename = os.path.split(file_name1)
-                        if label_gt == 0:
-                            dir_prob = f'prob{int((1-prob) * 100)}_'
-                        if label_gt == 1:
-                            dir_prob = f'prob{int(prob * 100)}_'
-
-                        list_tmp_dir = tmp_dir.split('/')
-                        list_tmp_dir[-1] = dir_prob + list_tmp_dir[-1]
-                        img_dest = os.path.join('/'.join(list_tmp_dir), tmp_filename)
-                        print(img_dest)
-                        os.makedirs(os.path.dirname(img_dest), exist_ok=True)
-                        shutil.copy(file_full_path, img_dest)
-
+    from libs.neural_networks.helper.my_export_confusion_files import export_confusion_files_binary_class
+    export_confusion_files_binary_class(image_files, labels, probs_ensembling, dir_original, dir_preprocess, dir_dest, threshold)
     print('export confusion files ok!')
-
-
 
 

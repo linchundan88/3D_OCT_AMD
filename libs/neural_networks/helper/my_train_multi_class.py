@@ -60,17 +60,15 @@ def train(model, loader_train, criterion, activation, optimizer, scheduler, epoc
 
             # region batch statistics
             # CrossEntropyLoss contains log_softmax and	nll_loss
-            # the following line can be eliminated, unless we want to show probs.
             assert activation in [None, 'softmax'], f'activation function error!'
             if activation == 'softmax':
                 outputs = torch.softmax(outputs, dim=1)
-            _, preds = torch.max(outputs, 1)
+            _, preds = torch.max(outputs, dim=1)
 
             list_labels += labels.cpu().numpy().tolist()
             list_preds += preds.cpu().numpy().tolist()
 
             epoch_loss += loss.item()
-
             running_loss += loss.item()  #reduction='mean'
             running_corrects += torch.sum(preds == labels).cpu().numpy()
             running_sample_num += inputs.shape[0]

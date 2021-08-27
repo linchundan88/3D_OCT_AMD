@@ -12,23 +12,20 @@ dir_process = '/disk1/3D_OCT_AMD/2021_4_22/preprocess/128_128_128/'
 data_version = 'v1'
 
 csv_all = os.path.abspath(os.path.join(os.path.abspath('..'),
-            'datafiles', data_version, task_type + '.csv'))
+                                       'datafiles', data_version, task_type + '.csv'))
 write_csv_based_on_dir(csv_all, dir_process, dict_mapping,
                        match_type='partial', list_file_ext=['.npy', '.NPY'])
 
 
-# 02-000003_20160601_120250_OPT_L_001.img.npy
 files_train, labels_train, files_valid, labels_valid, files_test, labels_test = \
     split_dataset_by_pat_id(csv_all,
                             valid_ratio=0.15, test_ratio=0.15, random_state=111)
-
 csv_train = os.path.abspath(os.path.join(os.path.abspath('..'),
             'datafiles', data_version, task_type + '_train.csv'))
 csv_valid = os.path.abspath(os.path.join(os.path.abspath('..'),
             'datafiles', data_version, task_type + '_valid.csv'))
 csv_test = os.path.abspath(os.path.join(os.path.abspath('..'),
             'datafiles', data_version, task_type + '_test.csv'))
-
 write_images_labels_csv(files_train, labels_train,
                         filename_csv=csv_train)
 write_images_labels_csv(files_valid, labels_valid,

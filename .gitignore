@@ -4,5 +4,5 @@
 /datafiles/
 /libs/neural_networks/optimizer_obsoleted
 /libs/neural_networks/heatmaps/obsoleted
-/trained_models/
+/libs/neural_networks/heatmaps/Captum_obsoleted/
 /trained_models/

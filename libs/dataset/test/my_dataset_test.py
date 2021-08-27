@@ -1,6 +1,6 @@
 import cv2
 from imgaug import augmenters as iaa
-from libs.dataset.my_dataset import Dataset_CSV_3d
+from libs.dataset.my_dataset_obsoleted import Dataset_CSV_3d
 import numpy as np
 import os
 

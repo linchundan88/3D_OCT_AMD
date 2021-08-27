@@ -1,8 +1,10 @@
+'''IntegratedGradients was better than GuidedBackprop in this study'''
+
 import warnings
 warnings.filterwarnings("ignore")
 import os
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
 import pandas as pd
 import cv2
 import numpy as np
@@ -11,12 +13,14 @@ import torch.nn as nn
 from captum.attr import *
 import imageio
 from libs.neural_networks.model.my_get_model import get_model
+from libs.dataset.my_dataset_torchio import get_tensor
 from matplotlib import pyplot as plt
+
 
 #region set parameters and load model
 dir_original = '/disk1/3D_OCT_AMD/2021_4_22/original/'
 dir_preprocess = '/disk1/3D_OCT_AMD/2021_4_22/preprocess/128_128_128/'
-dir_dest = '/disk1/3D_OCT_AMD/2021_7_31/results/heatmap_binary_class/'
+dir_dest = '/disk1/3D_OCT_AMD/2021_8_27/results/heatmap_binary_class/'
 csv_file = os.path.join(os.path.abspath('../../..'), 'datafiles', 'v1', '3D_OCT_AMD_test.csv')
 upsample_size = (128, 128, 128)
 slices_significance_number = 5
@@ -26,24 +30,28 @@ gif_fps = 1
 model_name = 'medical_net_resnet50' #cls_3d, medical_net_resnet50
 model_file = os.path.join(os.path.abspath('../../..'), 'trained_models', 'binary_class', 'medical_net_resnet50.pth')
 model = get_model(model_name, num_class=1, model_file=model_file)
+class_target = 0
 activation = 'sigmoid'
 threshold = 0.5
-class_predict = 0
 image_shape = (64, 64)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 if torch.cuda.device_count() > 0:
     model.to(device)
-# if torch.cuda.device_count() > 1:
-#     model = nn.DataParallel(model)
+if torch.cuda.device_count() > 1:
+    model = nn.DataParallel(model)
 model = model.eval()
 #endregion
 
 
-heatmap_type = 'GuidedGradCam'  #GuidedBackprop
-noise_tunnel = False
+heatmap_type = 'GuidedGradCam'  #'GuidedBackprop', 'IntegratedGradients', 'GuidedGradCam'
+noise_tunnel = True
 
-dir_dest = os.path.join(dir_dest, heatmap_type)
+if not noise_tunnel:
+    dir_dest = os.path.join(dir_dest, heatmap_type)
+else:
+    dir_dest = os.path.join(dir_dest, f'{heatmap_type}_noise')
+
 if heatmap_type == 'GuidedBackprop':
     guidedBackprop = GuidedBackprop(model)
 if heatmap_type == 'IntegratedGradients':
@@ -59,11 +67,10 @@ if heatmap_type == 'GuidedGradCam':
     if model_name == 'medical_net_resnet50':
         guidedGradCam = GuidedGradCam(model, model.base_model.layer4)
 
-from libs.dataset.my_dataset_torchio import get_tensor
+
 df = pd.read_csv(csv_file)
 for index, row in df.iterrows():
-    file_npy = row['images']
-    class_gt = row['labels']
+    file_npy, class_gt = row['images'], row['labels']
     tensor_x = get_tensor(file_npy, image_shape=image_shape,
                           depth_start=0, depth_interval=2)
     tensor_x = tensor_x.to(device)
@@ -71,31 +78,31 @@ for index, row in df.iterrows():
         outputs = model(tensor_x)
         if activation == 'sigmoid':
             outputs = torch.sigmoid(outputs)
-        #or pytorch implementation: _, preds = torch.max(outputs, 1)
-        # outputs = torch.flatten(outputs)
         prob = float(outputs)
 
         if prob > threshold:
             array_3d = np.load(file_npy)  # shape (D,H,W), used to generate the preprocessed images
 
-            if heatmap_type in ['GuidedBackprop', 'IntegratedGradients', 'GuidedGradCam']:
+            if heatmap_type in ['IntegratedGradients', 'GuidedBackprop', 'GuidedGradCam']:
 
                 if heatmap_type == 'GuidedBackprop':
                     if not noise_tunnel:
-                        attribution = guidedBackprop.attribute(tensor_x, target=class_predict)
+                        attribution = guidedBackprop.attribute(tensor_x, target=class_target)
                     else: #in this study, using NoiseTunel generate bad results.
                         nt = NoiseTunnel(guidedBackprop)
                         attribution = nt.attribute(tensor_x, nt_type='smoothgrad',
-                                                   stdevs=0.05, nt_samples=20, target=class_predict)
+                                                   stdevs=0.05, nt_samples=20, target=class_target)
 
                 if heatmap_type == 'IntegratedGradients':
-                    attribution = integratedGradients.attribute(tensor_x, target=class_predict)
-                    # nt = NoiseTunnel(integratedGradients)
-                    # attribution = nt.attribute(tensor_x, nt_type='smoothgrad',
-                    #                            nt_samples=1, target=class_predict)
+                    if not noise_tunnel:
+                        attribution = integratedGradients.attribute(tensor_x, target=class_target)
+                    else:
+                        nt = NoiseTunnel(integratedGradients)
+                        attribution = nt.attribute(tensor_x, nt_type='smoothgrad',
+                                                   stdevs=0.02, nt_samples=4, target=class_target)
 
                 if heatmap_type == 'GuidedGradCam':
-                    attribution = guidedGradCam.attribute(tensor_x, target=class_predict)
+                    attribution = guidedGradCam.attribute(tensor_x, target=class_target)
 
 
                 # (B,C,D,H,W) linear(3D-only), bilinear(4D-only), trilinear(5D-only).
@@ -127,7 +134,6 @@ for index, row in df.iterrows():
                     print(file_img)
                     cv2.imwrite(file_img, array_3d[i])
 
-
                     if i in slice_significance:
                         # heatmap image
                         heatmap = heatmaps[i]
@@ -149,9 +155,8 @@ for index, row in df.iterrows():
                         print(file_heatmap_gif)
                         imageio.mimsave(file_heatmap_gif, gif_images, fps=gif_fps)
 
-
             if heatmap_type == 'LayerGradCam':
-                attr = layer_gc.attribute(tensor_x, class_predict, relu_attributions=True)
+                attr = layer_gc.attribute(tensor_x, class_target, relu_attributions=True)
                 upsampled_attr = LayerAttribution.interpolate(attr, upsample_size, interpolate_mode='trilinear')
                 cam = upsampled_attr.detach().cpu().numpy().squeeze()
 
@@ -195,6 +200,7 @@ for index, row in df.iterrows():
                         os.makedirs(os.path.dirname(file_heatmap_gif), exist_ok=True)
                         print(file_heatmap_gif)
                         imageio.mimsave(file_heatmap_gif, gif_images, fps=gif_fps)
+
 
 
 print('OK')

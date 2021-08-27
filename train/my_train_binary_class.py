@@ -11,8 +11,8 @@ parser.add_argument('--CUDA_VISIBLE_DEVICES')
 parser.add_argument('--task_type', default='3D_OCT_AMD')
 parser.add_argument('--data_version', default='v1')
 # parser.add_argument('--sampling_class_weights', default=(1, 1.2))  #dynamic resampling
-parser.add_argument('--model_name', default='medical_net_resnet50') #Cls_3d, medical_net_resnet50
-parser.add_argument('--drop_prob', default='0.5')
+parser.add_argument('--model_name', default='medical_net_resnet50') #cls_3d, medical_net_resnet50
+parser.add_argument('--drop_prob', default=0.5)
 parser.add_argument('--pre_trained', default=True)  #initialize weights from pre-trained model
 parser.add_argument('--image_shape', default=(64, 64))
 parser.add_argument('--random_add', default=8)
@@ -32,7 +32,7 @@ parser.add_argument('--lr', default=0.001)
 parser.add_argument('--step_size', default=4)
 parser.add_argument('--gamma', default=0.3)
 parser.add_argument('--log_interval_train', default=10)
-parser.add_argument('--save_model_dir', default='/tmp2/2021_7_31_AMD/binary_class/')
+parser.add_argument('--save_model_dir', default='/tmp2/2021_8_1_AMD/binary_class/')
 
 args = parser.parse_args()
 
@@ -52,7 +52,6 @@ from libs.neural_networks.model.my_get_model import get_model
 #endregion
 
 #region dataset
-
 csv_train = os.path.join(os.path.abspath('..'),
                 'datafiles', args.data_version, f'{args.task_type}_train.csv')
 csv_valid = os.path.join(os.path.abspath('..'),
@@ -77,7 +76,7 @@ imgaug_iaa = iaa.Sequential([
 
 df = pd.read_csv(csv_train)
 
-from torch.utils.data.sampler import WeightedRandomSampler
+# from torch.utils.data.sampler import WeightedRandomSampler
 # list_class_samples = []
 # for label in range(num_class):
 #     list_class_samples.append(len(df[df['labels'] == label]))
@@ -86,7 +85,6 @@ from torch.utils.data.sampler import WeightedRandomSampler
 # for label in df['labels']:
 #     sampling_weights.append(args.sampling_class_weights[label])
 # sampler = WeightedRandomSampler(weights=sampling_weights, num_samples=len(df))
-
 
 ds_train = Dataset_CSV_train(csv_file=csv_train,  image_shape=args.image_shape,
                              random_crop_h=args.random_crop_h, random_noise=args.random_noise,
@@ -107,7 +105,7 @@ loader_test = DataLoader(ds_test, batch_size=args.batch_size_valid,
 #region define model
 
 if args.pre_trained:
-    if args.model_name == 'Cls_3d':
+    if args.model_name == 'cls_3d':
         model_file = '/disk1/Models_Genesis/Genesis_Chest_CT.pt'
     if args.model_name == 'medical_net_resnet34':
         model_file ='/disk1/MedicalNet_pytorch_files/pretrain/resnet_34.pth'
@@ -124,8 +122,6 @@ if args.pre_trained:
     model = get_model(args.model_name, num_class=1, model_file=model_file, drop_prob=args.drop_prob)
 else:
     model_file = None
-
-
 
 #endregion
 

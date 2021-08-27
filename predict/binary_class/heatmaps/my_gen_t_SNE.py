@@ -6,21 +6,21 @@ import pandas as pd
 from libs.dataset.my_dataset_torchio import Dataset_CSV_test
 from torch.utils.data import DataLoader
 from libs.neural_networks.model.my_get_model import get_model
+from libs.neural_networks.heatmaps.t_SNE.my_tsne_helper import compute_features_files, gen_tse_features, draw_tsne
 
 
 #region load model and set some parameters
 csv_file = os.path.join(os.path.abspath('../../..'), 'datafiles', 'v1', '3D_OCT_AMD_test.csv')
-dir_dest = '/disk1/3D_OCT_AMD/results/2021_7_31/heatmaps_binary_class/t_SNE/'
+dir_dest = '/disk1/3D_OCT_AMD/results/2021_8_1/heatmaps_binary_class/t_SNE/'
 tsne_image_file = os.path.join(dir_dest, 't_sne_test.png')
 save_features = False
 npy_file_features = os.path.join(dir_dest, 't_sne_test.npy')
-
 
 model_name = 'medical_net_resnet50'
 model_file = os.path.join(os.path.abspath('../../..'), 'trained_models', 'binary_class', 'medical_net_resnet50.pth')
 image_shape = (64, 64)
 model = get_model(model_name, num_class=1, model_file=model_file)
-layer_features = model.dense_1  #Cls_3d, medical_net_resnet50, dense_1
+layer_features = model.dense_1  #cls_3d, medical_net_resnet50, dense_1
 batch_size = 32
 ds_test = Dataset_CSV_test(csv_file=csv_file, image_shape=image_shape,
                            depth_start=0, depth_interval=2, test_mode=True)
@@ -29,8 +29,7 @@ loader_test = DataLoader(ds_test, batch_size=batch_size,
 #endregion
 
 
-from libs.neural_networks.heatmaps.t_SNE.my_tsne_helper import compute_features, gen_tse_features, draw_tsne
-features = compute_features(model, layer_features, loader_test)
+features = compute_features_files(model, layer_features, loader_test)
 
 X_tsne = gen_tse_features(features)
 if save_features:
